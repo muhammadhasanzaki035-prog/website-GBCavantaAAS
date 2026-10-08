@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AAS GBC Avanta dan Gangguan Ca</title>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+<style>:root{--bg:#f2f6f4;--ink:#14302a;--mut:#5b7068;--line:#cfdcd6;--acc:#0d6b5c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Georgia,serif;scroll-behavior:smooth}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;font-family:system-ui,sans-serif}
+nav{display:flex;flex-wrap:wrap;gap:14px}nav a{color:var(--acc);text-decoration:none;font-size:.92rem}
+main{max-width:900px;margin:0 auto;padding:16px}
+section{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;margin-bottom:16px}
+h1{font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.15}h2{color:var(--acc);font-family:system-ui,sans-serif}
+.btn,button{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:10px 16px;text-decoration:none;cursor:pointer;font:inherit;display:inline-block}
+.btn.o{background:none;color:var(--acc);border:1px solid var(--acc)}
+.hint{color:var(--mut);font-size:.88rem}
+.viewer{display:grid;grid-template-columns:200px 1fr;gap:12px;margin-bottom:12px}
+#daftar{list-style:none;margin:0;padding:0}#daftar li{padding:7px 10px;border-bottom:1px solid var(--line);cursor:pointer;font-size:.9rem}
+#daftar li:hover,#daftar li.on{background:#e3f1ec}
+model-viewer{width:100%;height:380px;background:#e9efec;border-radius:8px}
+#info{margin-top:8px;padding:10px;border-left:4px solid var(--acc);background:#f6faf8}
+.hs{background:var(--acc);color:#fff;border:2px solid #fff;border-radius:50%;width:22px;height:22px;padding:0;font-size:.7rem}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%}th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+.bar{height:26px;background:#e3e9e6;border-radius:6px;overflow:hidden;margin:10px 0}#bar{height:100%;background:var(--acc);width:100%;transition:width .5s}
+select{padding:8px;font:inherit}
+@media(max-width:640px){.viewer{grid-template-columns:1fr}#daftar{display:flex;overflow-x:auto}#daftar li{white-space:nowrap}}
+@media(prefers-reduced-motion:reduce){#bar{transition:none}html,body{scroll-behavior:auto}}
+
+iframe{width:100%;height:85vh;min-height:600px;border:1px solid var(--line);border-radius:8px;background:#fff}</style>
+</head><body>
+<header><b>AAS Avanta · Ca</b>
+<nav><a href="#beranda">Beranda</a><a href="#model">Model 3D</a><a href="#teori">Teori AAS</a><a href="#gangguan">Gangguan Ca</a><a href="#kalkulator">Kalkulator</a><a href="#tentang">Tentang</a></nav></header>
+<main>
+<section id="beranda"><h1>Kenali alatnya, pahami gangguannya, hitung hasilnya</h1>
+<p>Website belajar spektrofotometri serapan atom (AAS) GBC Avanta dan analisis kalsium.</p>
+<a class="btn" href="#model">Lihat model 3D</a> <a class="btn o" href="#kalkulator">Buka kalkulator</a></section>
+
+<section id="model"><h2>Model 3D Avanta</h2>
+<p class="hint">Putar dengan mouse atau jari, klik titik penanda atau nama komponen.</p>
+<div class="viewer">
+<ul id="daftar"></ul>
+<div class="box"><model-viewer id="mv" src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" alt="Model AAS GBC Avanta"></model-viewer>
+<div id="info"><b>Pilih komponen</b><p>Klik nama di daftar atau titik pada model.</p></div></div></div>
+<p><label>Muat model sendiri (.glb): <input type="file" accept=".glb" onchange="document.getElementById('mv').src=URL.createObjectURL(this.files[0])"></label></p><button onclick="alur()">Tampilan alur sampel</button> <span id="alurtxt" class="hint"></span></section>
+
+<section id="teori"><h2>Teori AAS</h2>
+<p>Atom bebas di dalam nyala menyerap cahaya dari lampu katoda berongga pada panjang gelombang khasnya. Makin banyak atom, makin besar serapannya. Untuk Ca dipakai 422,7 nm.</p>
+<p><b>Hukum Lambert-Beer:</b> A = ε · b · c. Absorbansi (A) berbanding lurus dengan konsentrasi (c), sehingga kurva kalibrasi berbentuk garis lurus.</p>
+<p>Alur alat: sampel dihisap → nebulizer → spray chamber → burner → nyala → monokromator → detektor (PMT) → komputer.</p></section>
+
+<section id="gangguan"><h2>Gangguan pada analisis Ca</h2>
+<div class="tw"><table><tr><th>Jenis</th><th>Penyebab</th><th>Cara mengatasi</th></tr>
+<tr><td>Kimia</td><td>Fosfat, sulfat, atau Al membentuk senyawa sulit terurai</td><td>Tambah La atau Sr, atau nyala N₂O–asetilen</td></tr>
+<tr><td>Ionisasi</td><td>Atom Ca terionisasi di nyala panas</td><td>Tambah KCl atau CsCl</td></tr>
+<tr><td>Matriks / fisik</td><td>Viskositas dan garam sampel berbeda dari standar</td><td>Matrix matching atau adisi standar</td></tr></table></div>
+<h3>Simulasi skenario</h3>
+<select id="skn" onchange="sim()"><option value="100">Tanpa gangguan</option><option value="58">Dengan fosfat</option><option value="96">Fosfat + La</option></select>
+<div class="bar"><div id="bar"></div></div><p id="simtxt"></p>
+<p class="hint">Angka simulasi bersifat contoh. Ganti dengan data percobaanmu di kalkulator.</p></section>
+
+<section id="kalkulator"><h2>Kalkulator dan laporan</h2><iframe title="Kalkulator AAS Ca" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover&quot;&gt;
+&lt;title&gt;Kalkulator AAS Ca&lt;/title&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;style&gt;
+:root{--bg:#f2f6f4;--card:#fff;--ink:#14302a;--mut:#5b7068;--line:#cfdcd6;--acc:#0d6b5c;--acc2:#c2410c;--ok:#15803d;--bad:#b91c1c;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=&quot;light&quot;]){--bg:#0f1a17;--card:#17252166;--ink:#e3efe9;--mut:#93aaa1;--line:#2b4039;--acc:#4fd1b5;--acc2:#fb923c;--ok:#4ade80;--bad:#f87171}}
+:root[data-theme=&quot;dark&quot;]{--bg:#0f1a17;--card:#172521;--ink:#e3efe9;--mut:#93aaa1;--line:#2b4039;--acc:#4fd1b5;--acc2:#fb923c;--ok:#4ade80;--bad:#f87171}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 &quot;Source Serif 4&quot;,Georgia,serif}
+h1,h2,h3,label,th,button,.s{font-family:&quot;Familjen Grotesk&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.1;margin:.3em 0 .2em}
+.lead{color:var(--mut);max-width:60ch;margin:0 0 24px}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:0 0 16px}
+h2{font-size:1.1rem;margin:0 0 12px;color:var(--acc)}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+label{display:block;font-size:.82rem;color:var(--mut);margin-bottom:3px}
+input{width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--ink);font:inherit;font-size:.95rem}
+input:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+td input{min-width:78px}
+button{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:10px 18px;font-size:.95rem;cursor:pointer}
+button.o{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+:root[data-theme=&quot;dark&quot;] button,:root:not([data-theme=&quot;light&quot;]) button{color:#06201a}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.eq{font-size:1.5rem;font-family:Georgia,serif;margin:4px 0}
+.s{font-weight:600}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.cv{position:relative;height:260px;margin-top:10px}
+#rep{display:none}
+.concl{border-left:4px solid var(--acc2);padding:6px 12px;margin-top:12px}
+.hint{font-size:.85rem;color:var(--mut)}
+@media print{body{background:#fff;color:#000}section{break-inside:avoid;border-color:#bbb}.bar,#inp{display:none!important}#rep{display:block!important}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+&lt;h1&gt;Analisis Ca dengan AAS GBC Avanta&lt;/h1&gt;
+&lt;p class=&quot;lead&quot;&gt;Isi data kalibrasi dan sampel, lalu laporan dengan regresi, LOD/LOQ, presisi, akurasi, dan perbandingan gangguan fosfat tersusun otomatis. Angka awal adalah contoh; ganti dengan data percobaan.&lt;/p&gt;
+
+&lt;div id=&quot;inp&quot;&gt;
+&lt;section&gt;&lt;h2&gt;Langkah 1. Info percobaan&lt;/h2&gt;
+&lt;div class=&quot;g&quot;&gt;
+&lt;div&gt;&lt;label for=&quot;an&quot;&gt;Nama analis&lt;/label&gt;&lt;input id=&quot;an&quot; value=&quot;Nama Analis&quot;&gt;&lt;/div&gt;
+&lt;div&gt;&lt;label for=&quot;tg&quot;&gt;Tanggal&lt;/label&gt;&lt;input id=&quot;tg&quot; type=&quot;date&quot;&gt;&lt;/div&gt;
+&lt;div&gt;&lt;label for=&quot;sm&quot;&gt;Jenis sampel&lt;/label&gt;&lt;input id=&quot;sm&quot; value=&quot;Air sumur&quot;&gt;&lt;/div&gt;
+&lt;div&gt;&lt;label for=&quot;wl&quot;&gt;Panjang gelombang (nm)&lt;/label&gt;&lt;input id=&quot;wl&quot; value=&quot;422,7&quot;&gt;&lt;/div&gt;
+&lt;div&gt;&lt;label for=&quot;ny&quot;&gt;Nyala&lt;/label&gt;&lt;input id=&quot;ny&quot; value=&quot;Udara–asetilen&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/section&gt;
+
+&lt;section&gt;&lt;h2&gt;Langkah 2. Deret standar&lt;/h2&gt;
+&lt;div class=&quot;tw&quot;&gt;&lt;table id=&quot;st&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Konsentrasi (mg/L)&lt;/th&gt;&lt;th&gt;Absorbansi&lt;/th&gt;&lt;th&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;div class=&quot;bar&quot;&gt;&lt;button class=&quot;o&quot; onclick=&quot;addStd()&quot;&gt;Tambah titik&lt;/button&gt;&lt;/div&gt;
+&lt;p class=&quot;hint&quot;&gt;Minimal 5 titik, termasuk blanko (0 mg/L).&lt;/p&gt;&lt;/section&gt;
+
+&lt;section&gt;&lt;h2&gt;Langkah 3. Data sampel&lt;/h2&gt;
+&lt;div class=&quot;g&quot; style=&quot;margin-bottom:12px&quot;&gt;
+&lt;div&gt;&lt;label for=&quot;fp&quot;&gt;Faktor pengenceran&lt;/label&gt;&lt;input id=&quot;fp&quot; value=&quot;1&quot;&gt;&lt;/div&gt;
+&lt;div&gt;&lt;label for=&quot;ad&quot;&gt;Spike ditambahkan (mg/L)&lt;/label&gt;&lt;input id=&quot;ad&quot; value=&quot;2&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;tw&quot;&gt;&lt;table id=&quot;sc&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Skenario&lt;/th&gt;&lt;th&gt;Abs 1&lt;/th&gt;&lt;th&gt;Abs 2&lt;/th&gt;&lt;th&gt;Abs 3&lt;/th&gt;&lt;th&gt;Abs spike&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;p class=&quot;hint&quot;&gt;Spike: sampel yang ditambah standar sebesar nilai di atas. Kosongkan sel yang tidak dipakai.&lt;/p&gt;
+&lt;div class=&quot;bar&quot;&gt;&lt;button onclick=&quot;hitung()&quot;&gt;Hitung dan buat laporan&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;rep&quot;&gt;
+&lt;section id=&quot;r0&quot;&gt;&lt;/section&gt;
+&lt;/div&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+const SC=[&quot;Tanpa gangguan&quot;,&quot;Dengan fosfat&quot;,&quot;Fosfat + La&quot;];
+const dS=[[0,0.002],[1,0.052],[2,0.103],[3,0.150],[4,0.203],[5,0.251]];
+const dK=[[0.101,0.103,0.100,0.151],[0.062,0.060,0.064,0.100],[0.098,0.099,0.097,0.148]];
+let charts=[];
+const $=id=&gt;document.getElementById(id);
+const num=v=&gt;{const x=parseFloat(String(v).replace(&quot;,&quot;,&quot;.&quot;));return isNaN(x)?null:x};
+const f=(x,d=3)=&gt;x==null||!isFinite(x)?&quot;–&quot;:x.toFixed(d).replace(&quot;.&quot;,&quot;,&quot;);
+function addStd(c=&quot;&quot;,a=&quot;&quot;){const r=$(&quot;st&quot;).tBodies[0].insertRow();r.innerHTML=`&lt;td&gt;&lt;input value=&quot;${c}&quot; aria-label=&quot;Konsentrasi&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;input value=&quot;${a}&quot; aria-label=&quot;Absorbansi&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;button class=&quot;o&quot; onclick=&quot;this.closest(&#x27;tr&#x27;).remove()&quot; aria-label=&quot;Hapus baris&quot;&gt;Hapus&lt;/button&gt;&lt;/td&gt;`}
+dS.forEach(d=&gt;addStd(d[0],d[1]));
+SC.forEach((s,i)=&gt;{const r=$(&quot;sc&quot;).tBodies[0].insertRow();r.innerHTML=`&lt;td&gt;${s}&lt;/td&gt;`+dK[i].map(v=&gt;`&lt;td&gt;&lt;input value=&quot;${v}&quot; aria-label=&quot;${s}&quot;&gt;&lt;/td&gt;`).join(&quot;&quot;)});
+$(&quot;tg&quot;).valueAsDate=new Date();
+
+const mean=a=&gt;a.reduce((p,c)=&gt;p+c,0)/a.length;
+const sd=a=&gt;a.length&lt;2?null:Math.sqrt(a.reduce((p,c)=&gt;p+(c-mean(a))**2,0)/(a.length-1));
+function reg(p){const n=p.length,mx=mean(p.map(q=&gt;q[0])),my=mean(p.map(q=&gt;q[1]));
+let sxx=0,sxy=0,syy=0;p.forEach(([x,y])=&gt;{sxx+=(x-mx)**2;sxy+=(x-mx)*(y-my);syy+=(y-my)**2});
+const b=sxy/sxx,a=my-b*mx,r=sxy/Math.sqrt(sxx*syy);
+const sse=p.reduce((s,[x,y])=&gt;s+(y-(a+b*x))**2,0);
+return{a,b,r,r2:r*r,syx:Math.sqrt(sse/(n-2)),n}}
+const st=(ok,t)=&gt;`&lt;span class=&quot;s ${ok?&quot;ok&quot;:&quot;bad&quot;}&quot;&gt;${ok?&quot;✔ memenuhi&quot;:&quot;✘ tidak memenuhi&quot;}${t?&quot; (&quot;+t+&quot;)&quot;:&quot;&quot;}&lt;/span&gt;`;
+
+function hitung(){
+const pts=[...$(&quot;st&quot;).tBodies[0].rows].map(r=&gt;[num(r.cells[0].firstChild.value),num(r.cells[1].firstChild.value)]).filter(p=&gt;p[0]!=null&amp;&amp;p[1]!=null);
+if(pts.length&lt;5){alert(&quot;Isi minimal 5 titik standar (termasuk blanko).&quot;);return}
+const fp=num($(&quot;fp&quot;).value)||1,add=num($(&quot;ad&quot;).value);
+const R=reg(pts),conc=y=&gt;(y-R.a)/R.b*fp;
+const lod=3.3*R.syx/R.b,loq=10*R.syx/R.b;
+const res=[...$(&quot;sc&quot;).tBodies[0].rows].map((r,i)=&gt;{
+const v=[...r.querySelectorAll(&quot;input&quot;)].map(x=&gt;num(x.value));
+const reps=v.slice(0,3).filter(x=&gt;x!=null),cs=reps.map(conc),m=cs.length?mean(cs):null;
+const s=sd(cs),rsd=s!=null&amp;&amp;m?s/m*100:null;
+const rpd=cs.length&gt;=2?Math.abs(cs[0]-cs[1])/mean(cs.slice(0,2))*100:null;
+const sp=v[3]!=null?conc(v[3]):null;
+const rec=sp!=null&amp;&amp;add&amp;&amp;m!=null?(sp-m)/add*100:null;
+const u=s!=null?2*s/Math.sqrt(cs.length):null;
+return{n:SC[i],cs,m,s,rsd,rpd,rec,u}});
+const A=res[0],B=res[1],C=res[2];
+let con=`Kurva kalibrasi ${R.r&gt;=0.995?&quot;linear&quot;:&quot;kurang linear&quot;} (r = ${f(R.r,4)}). `;
+if(A.m&amp;&amp;B.m){const d=(A.m-B.m)/A.m*100;con+=`Fosfat menurunkan kadar Ca terukur sebesar ${f(d,1)}%`;
+if(C.m){const p=(C.m-B.m)/(A.m-B.m)*100;con+=`, penambahan La memulihkan sinyal hingga ${f(C.m/A.m*100,1)}% dari kondisi tanpa gangguan.`}else con+=&quot;.&quot;}
+const row=(l,fn)=&gt;`&lt;tr&gt;&lt;th&gt;${l}&lt;/th&gt;${res.map(fn).join(&quot;&quot;)}&lt;/tr&gt;`;
+$(&quot;r0&quot;).outerHTML=`&lt;section id=&quot;r0&quot;&gt;&lt;h2&gt;Laporan analisis kalsium (Ca) dengan AAS&lt;/h2&gt;
+&lt;p&gt;Analis: &lt;b&gt;${$(&quot;an&quot;).value}&lt;/b&gt; · Tanggal: ${$(&quot;tg&quot;).value} · Sampel: ${$(&quot;sm&quot;).value}&lt;br&gt;Panjang gelombang ${$(&quot;wl&quot;).value} nm · Nyala ${$(&quot;ny&quot;).value} · Faktor pengenceran ${f(fp,0)}&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;Kalibrasi dan linearitas&lt;/h2&gt;&lt;div class=&quot;eq&quot;&gt;y = ${f(R.b,4)}x ${R.a&lt;0?&quot;−&quot;:&quot;+&quot;} ${f(Math.abs(R.a),4)}&lt;/div&gt;
+&lt;p&gt;r = ${f(R.r,4)} · R² = ${f(R.r2,4)} · Sy/x = ${f(R.syx,4)}&lt;br&gt;Linearitas (r ≥ 0,995): ${st(R.r&gt;=0.995)}&lt;/p&gt;
+&lt;div class=&quot;cv&quot;&gt;&lt;canvas id=&quot;c1&quot;&gt;&lt;/canvas&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;Hasil kadar Ca (mg/L)&lt;/h2&gt;&lt;div class=&quot;tw&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;${res.map(r=&gt;`&lt;th&gt;${r.n}&lt;/th&gt;`).join(&quot;&quot;)}&lt;/tr&gt;
+${[0,1,2].map(i=&gt;row(&quot;Replikasi &quot;+(i+1),r=&gt;`&lt;td&gt;${f(r.cs[i],3)}&lt;/td&gt;`)).join(&quot;&quot;)}
+${row(&quot;Rata-rata&quot;,r=&gt;`&lt;td&gt;&lt;b&gt;${f(r.m,3)}&lt;/b&gt;&lt;/td&gt;`)}
+${row(&quot;Ketidakpastian (±, 2·SD/√n)&quot;,r=&gt;`&lt;td&gt;${f(r.u,3)}&lt;/td&gt;`)}&lt;/table&gt;&lt;/div&gt;
+&lt;p&gt;LOD = ${f(lod,3)} mg/L · LOQ = ${f(loq,3)} mg/L&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;Presisi dan akurasi&lt;/h2&gt;&lt;div class=&quot;tw&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;${res.map(r=&gt;`&lt;th&gt;${r.n}&lt;/th&gt;`).join(&quot;&quot;)}&lt;/tr&gt;
+${row(&quot;%RSD&quot;,r=&gt;`&lt;td&gt;${f(r.rsd,2)} ${r.rsd!=null?st(r.rsd&lt;=5):&quot;&quot;}&lt;/td&gt;`)}
+${row(&quot;%RPD (duplo 1–2)&quot;,r=&gt;`&lt;td&gt;${f(r.rpd,2)} ${r.rpd!=null?st(r.rpd&lt;=10):&quot;&quot;}&lt;/td&gt;`)}
+${row(&quot;% Recovery&quot;,r=&gt;`&lt;td&gt;${f(r.rec,1)} ${r.rec!=null?st(r.rec&gt;=90&amp;&amp;r.rec&lt;=110,r.rec&gt;=80&amp;&amp;r.rec&lt;=120&amp;&amp;!(r.rec&gt;=90&amp;&amp;r.rec&lt;=110)?&quot;masih dalam 80–120%&quot;:&quot;&quot;):&quot;&quot;}&lt;/td&gt;`)}&lt;/table&gt;&lt;/div&gt;
+&lt;p class=&quot;hint&quot;&gt;Kriteria: r ≥ 0,995 · %RSD ≤ 5 · %RPD ≤ 10 · recovery 90–110%. Sesuaikan dengan acuan dosen atau lab.&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;Perbandingan skenario gangguan&lt;/h2&gt;&lt;div class=&quot;cv&quot;&gt;&lt;canvas id=&quot;c2&quot;&gt;&lt;/canvas&gt;&lt;/div&gt;
+&lt;div class=&quot;concl&quot;&gt;&lt;b&gt;Kesimpulan otomatis.&lt;/b&gt; ${con}&lt;/div&gt;
+&lt;div class=&quot;bar&quot;&gt;&lt;button onclick=&quot;window.print()&quot;&gt;Cetak atau simpan PDF&lt;/button&gt;&lt;button class=&quot;o&quot; onclick=&quot;document.getElementById(&#x27;inp&#x27;).style.display=&#x27;block&#x27;;window.scrollTo(0,0)&quot;&gt;Ubah data&lt;/button&gt;&lt;/div&gt;&lt;/section&gt;`;
+$(&quot;rep&quot;).style.display=&quot;block&quot;;
+charts.forEach(c=&gt;c.destroy());
+const xs=pts.map(p=&gt;p[0]),mx=Math.max(...xs),ln=[{x:0,y:R.a},{x:mx,y:R.a+R.b*mx}];
+charts=[new Chart($(&quot;c1&quot;),{type:&quot;scatter&quot;,data:{datasets:[{label:&quot;Standar&quot;,data:pts.map(p=&gt;({x:p[0],y:p[1]})),backgroundColor:&quot;#0d6b5c&quot;,pointRadius:5},{label:&quot;Regresi&quot;,data:ln,type:&quot;line&quot;,borderColor:&quot;#c2410c&quot;,pointRadius:0,borderWidth:2}]},options:{maintainAspectRatio:false,scales:{x:{title:{display:true,text:&quot;Konsentrasi (mg/L)&quot;}},y:{title:{display:true,text:&quot;Absorbansi&quot;}}}}}),
+new Chart($(&quot;c2&quot;),{type:&quot;bar&quot;,data:{labels:res.map(r=&gt;r.n),datasets:[{label:&quot;Kadar Ca (mg/L)&quot;,data:res.map(r=&gt;r.m),backgroundColor:[&quot;#0d6b5c&quot;,&quot;#c2410c&quot;,&quot;#0891b2&quot;]}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:&quot;mg/L&quot;}}}}})];
+$(&quot;inp&quot;).style.display=&quot;none&quot;;
+$(&quot;r0&quot;).scrollIntoView();
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></section>
+<section id="tentang"><h2>Tentang</h2><p>Dibuat oleh: (isi nama tim). Referensi: (isi daftar pustaka).</p></section>
+</main>
+<script>// Daftar komponen. Ubah posisi hotspot (pos) dan kamera (orbit) setelah model GLB kamu siap.
+const K=[
+{n:"Lampu katoda berongga",f:"Sumber cahaya khas unsur yang dianalisis (Ca: 422,7 nm).",pos:"0 0.4 0.3",orbit:"20deg 70deg 1.5m"},
+{n:"Nebulizer",f:"Mengubah cairan sampel menjadi kabut halus.",pos:"0.3 0.1 0.2",orbit:"60deg 75deg 1.2m"},
+{n:"Spray chamber",f:"Memilih tetesan halus dan mencampurnya dengan gas.",pos:"0.2 0 0.1",orbit:"80deg 75deg 1.2m"},
+{n:"Burner head",f:"Tempat nyala. Atom bebas terbentuk di sini.",pos:"0 0.2 0",orbit:"0deg 60deg 1m"},
+{n:"Monokromator",f:"Memilih panjang gelombang yang dipakai.",pos:"-0.2 0.2 0",orbit:"-40deg 75deg 1.4m"},
+{n:"Detektor (PMT)",f:"Mengubah cahaya yang lolos menjadi sinyal listrik.",pos:"-0.4 0.2 0",orbit:"-70deg 75deg 1.4m"},
+{n:"Kontrol gas dan drain",f:"Mengatur aliran gas dan membuang limbah cair.",pos:"0.1 -0.2 0.3",orbit:"30deg 90deg 1.4m"},
+{n:"Komputer dan perangkat lunak",f:"Mengatur alat dan merekam absorbansi.",pos:"0.5 0 0",orbit:"90deg 80deg 2m"}
+];
+const mv=document.getElementById("mv"),ul=document.getElementById("daftar"),info=document.getElementById("info");
+K.forEach((k,i)=>{
+ const li=document.createElement("li");li.textContent=k.n;li.onclick=()=>pilih(i);ul.appendChild(li);
+ const b=document.createElement("button");b.className="hs";b.slot="hotspot-"+i;b.textContent=i+1;
+ b.setAttribute("data-position",k.pos);b.setAttribute("data-normal","0 1 0");b.setAttribute("aria-label",k.n);
+ b.onclick=()=>pilih(i);mv.appendChild(b);
+});
+function pilih(i){
+ const k=K[i];mv.removeAttribute("auto-rotate");mv.cameraOrbit=k.orbit;
+ info.innerHTML="<b>"+k.n+"</b><p>"+k.f+"</p>";
+ [...ul.children].forEach((l,j)=>l.classList.toggle("on",j===i));
+}
+function alur(){
+ const urut=[1,2,3,4,5,7];let j=0;
+ const t=document.getElementById("alurtxt");
+ const id=setInterval(()=>{ if(j>=urut.length){clearInterval(id);t.textContent="Selesai.";return}
+  pilih(urut[j]);t.textContent="Langkah "+(j+1)+" dari "+urut.length+": "+K[urut[j]].n;j++},2200);
+}
+function sim(){
+ const v=document.getElementById("skn").value,s=document.getElementById("skn");
+ document.getElementById("bar").style.width=v+"%";
+ document.getElementById("simtxt").textContent="Sinyal Ca relatif: "+v+"% dari kondisi tanpa gangguan.";
+}
+sim();
+</script></body></html>
